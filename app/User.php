@@ -48,4 +48,13 @@ class User extends Authenticatable
     {
         return $this->hasRole('cliente');
     }
+
+    public function estaVerificado()
+    {
+        if ($this->verified) {
+            return true;
+        }else {
+            return false;
+        }
+    }
 }

@@ -65,13 +65,23 @@ class RegisterController extends Controller
      * @return \App\User
      */
     protected function create(array $data)
-    {
-        return User::create([
+    {   
+        $user = new User([
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
             'email_token' => base64_encode($data['email']),
         ]);
+        
+        $user->save();
+        
+        //solo provisional se crean todos los nuevos usuarios como empleados
+        $empleado = \Defender::findRole('empleado');
+        $user->attachRole($empleado);
+
+        return $user;
+
+
     }
 
     /**
