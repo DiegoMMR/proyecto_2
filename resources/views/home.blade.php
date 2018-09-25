@@ -13,7 +13,7 @@
                             {{ session('status') }}
                         </div>
                     @endif
-
+                    {{Auth::user()->esAdministrador()}}
                     Solo si estas logueado puedes ver esta pagina
                 </div>
             </div>
