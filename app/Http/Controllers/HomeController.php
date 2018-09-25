@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+use Auth;
 
 use Illuminate\Http\Request;
 
@@ -23,6 +24,13 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+        //lo regresa si no esta verificada la cuenta
+        if(Auth::user()->estaVerificado())
+        {            
+            return view('home');
+        }else {
+            Auth::logout();
+            return view('sin-verificar');
+        }
     }
 }

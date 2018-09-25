@@ -13,7 +13,15 @@
                             {{ session('status') }}
                         </div>
                     @endif
-
+                    @if (Auth::user()->esAdministrador())
+                        <b>Rol: Administrador</b> <br>
+                    @endif
+                    @if (Auth::user()->esEmpleado())
+                        <b>Rol: Empleado</b> <br>
+                    @endif
+                    @if (Auth::user()->esCliente())
+                        <b>Rol: Cliente</b> <br>
+                    @endif
                     Solo si estas logueado puedes ver esta pagina
                 </div>
             </div>
