@@ -15,8 +15,9 @@ class UsersController extends Controller
      */
     public function index()
     {
+        $hashids = new Hashids();
         $users = User::paginate(15);
-        return view('user.index', compact('users'));
+        return view('user.index', compact('users', 'hashids'));
     }
 
     /**
@@ -48,8 +49,9 @@ class UsersController extends Controller
      */
     public function show($id)
     {
-        $user_id = Hashids::decode($id);
-        $user = User::find($id);
+        $hashids = new Hashids();
+        $user_id = $hashids->decode($id)[0];
+        $user = User::find($user_id);
         return view('user.show', compact('user'));
     }
 
