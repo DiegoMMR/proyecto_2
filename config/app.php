@@ -211,6 +211,7 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
         'Defender' => \Artesaos\Defender\Facades\Defender::class,
+        'Hashids' => Vinkla\Hashids\Facades\Hashids::class
 
     ],
 
