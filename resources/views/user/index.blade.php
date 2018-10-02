@@ -24,7 +24,7 @@
                         <td>{{ $user->id }}</td>
                         <td>{{ $user->name }}</td>
                         <td>{{ $user->email }}</td>
-                        <td><a class="btn btn-warning" href="{{ route('users.show', \Vinkla\Hashids\Facades\Hashids::encode($user->id)) }}">Mostrar</a></td>
+                        <td><a class="btn btn-warning" href="{{ route('users.show', \Hashids::encode($user->id)) }}">Mostrar</a></td>
                         </tr>
                     @endforeach
                         

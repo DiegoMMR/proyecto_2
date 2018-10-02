@@ -19,6 +19,7 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    @toastr_css
 </head>
 <body>
     <div id="app">
@@ -44,8 +45,10 @@
                             <li><a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a></li>
                             <li><a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a></li>
                         @else
-                            @if (Auth::user()->esAdministrador())                                
+                            @if (Auth::user()->esAdministrador() || Auth::user()->esEmpleado())                                
                                 <li><a class="nav-link" href="{{ route('users.index') }}">Usuarios</a></li>
+                                <li><a class="nav-link" href="{{ route('clientes.index') }}">Clientes</a></li>
+                                <li><a class="nav-link" href="{{ route('cuentas.index') }}">Cuentas</a></li>
                             @endif
 
                             <li class="nav-item dropdown">
@@ -76,4 +79,8 @@
         </main>
     </div>
 </body>
+@jquery
+@toastr_js
+@toastr_render
+@yield('scripts')
 </html>
