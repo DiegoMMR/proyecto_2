@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 use App\User;
-use Vinkla\Hashids\Facades\Hashids;
+use Hashids;
 
 use Illuminate\Http\Request;
 
@@ -16,7 +16,7 @@ class UsersController extends Controller
     public function index()
     {
         $users = User::paginate(15);
-        return view('user.index', compact('users', 'hashids'));
+        return view('user.index', compact('users'));
     }
 
     /**
