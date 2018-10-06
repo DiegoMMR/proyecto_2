@@ -43,13 +43,19 @@
                         <!-- Authentication Links -->
                         @guest
                             <li><a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a></li>
-                            <li><a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a></li>
                         @else
-                            @if (Auth::user()->esAdministrador() || Auth::user()->esEmpleado())                                
+                            @if (Auth::user()->esAdministrador())                                
                                 <li><a class="nav-link" href="{{ route('users.index') }}">Usuarios</a></li>
-                                <li><a class="nav-link" href="{{ route('clientes.index') }}">Clientes</a></li>
-                                <li><a class="nav-link" href="{{ route('cuentas.index') }}">Cuentas</a></li>
+                                <li><a class="nav-link" href="{{ route('cuentas-externas.index') }}">Cuentas Externas</a></li>
                             @endif
+                            @if (Auth::user()->esAdministrador() || Auth::user()->esEmpleado())                                
+                                <li><a class="nav-link" href="{{ route('clientes.index') }}">Clientes</a></li>
+                                <li><a class="nav-link" href="{{ route('listar-movimientos') }}">Cajero</a></li>
+                            @endif
+                            @if (Auth::user()->esCliente())
+                                <li><a class="nav-link" href="{{ route('cuentas-terceros.index') }}">Cuentas Terceros</a></li>
+                            @endif
+                            <li><a class="nav-link" href="{{ route('cuentas.index') }}">Cuentas</a></li>
 
                             <li class="nav-item dropdown">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>

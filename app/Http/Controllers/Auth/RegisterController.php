@@ -10,6 +10,8 @@ use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
 use App\Jobs\SendVerificationEmail;
+use Artesaos\Defender\Role;
+use App\Cliente;
 
 class RegisterController extends Controller
 {
@@ -40,7 +42,13 @@ class RegisterController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('guest');
+        $this->middleware('auth');
+    }
+
+    public function showRegistrationForm()
+    {
+        $roles = Role::pluck('name', 'id')->all();
+        return view('auth.register', compact('roles'));
     }
 
     /**
@@ -54,7 +62,6 @@ class RegisterController extends Controller
         return Validator::make($data, [
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:6|confirmed',
         ]);
     }
 
@@ -65,23 +72,33 @@ class RegisterController extends Controller
      * @return \App\User
      */
     protected function create(array $data)
-    {   
+    {         
+        
+        if ($data['role'] == 3) {//cliente
+            $cliente = Cliente::where('email',  $data['email'])->count();
+            if($cliente){ 
+                $cliente_id = Cliente::where('email',  $data['email'])->first()->id;
+            } else {
+                return 'Cliente No encontrado';    
+            }
+        } else {
+            $cliente_id = null;
+        }
+
         $user = new User([
             'name' => $data['name'],
             'email' => $data['email'],
+            'cliente_id' => $cliente_id,
             'password' => Hash::make($data['password']),
             'email_token' => base64_encode($data['email']),
         ]);
         
         $user->save();
         
-        //solo provisional se crean todos los nuevos usuarios como empleados
-        $empleado = \Defender::findRole('empleado');
-        $user->attachRole($empleado);
+        $role = \Defender::findRoleById($data['role']);
+        $user->attachRole($role);
 
         return $user;
-
-
     }
 
     /**
@@ -92,12 +109,32 @@ class RegisterController extends Controller
      */
     public function register(Request $request)
     {
-        $this->validator($request->all())->validate();
-        event(new Registered($user = $this->create($request->all())));
+        $req = $request->all();
+        $validator = Validator::make($req, [
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|max:255|unique:users',
+            ]);
+            
+        if ($validator->fails()) {
+            return back()
+            ->withErrors($validator)
+            ->withInput();
+        }
 
-        dispatch(new SendVerificationEmail($user));
+        //crea un a contraseña random
+        $req['password'] = str_random(13);
+        $user = $this->create($req);
+        if ($user == 'Cliente No encontrado') {
+            toastr()->error('Cliente No encontrado');
+            return back()->withInput();
+        }else {
+            event(new Registered($user));
+        }
 
-        return view('verification');
+        dispatch(new SendVerificationEmail($user, $req['password']));
+
+        toastr()->success('Usuario Creado Exitosamente');
+        return redirect()->route('users.index');
     }
 
     /**

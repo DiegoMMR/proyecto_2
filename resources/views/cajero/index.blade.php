@@ -2,23 +2,16 @@
 
 @section('content')
 
-
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-10">
             <div class="card">
-                <div class="card-header">{{$cuenta->nombre}}</div>
+                <div class="card-header">
+                    Movimientos 
+                    <a class="btn btn-success btn-sm float-right" href="{{ route('cajero') }}">Hacer Movimento</a>
+                </div>
 
                 <div class="card-body">
-
-                    <b># Cuenta</b> {{$cuenta->id}} <br>
-                    <b>Nombre</b> {{$cuenta->nombre}} <br>
-                    @if (!Auth::user()->esCliente())                        
-                        <b>Cliente</b> <a href="{{ route('clientes.show', \Hashids::encode($cuenta->cliente->id)) }}">{{$cuenta->cliente->nombre}}</a>  <br>
-                    @endif
-                    <b>Fecha de registro</b> {{ \Carbon\Carbon::parse($cuenta->created_at)->format('d/m/Y')}} 
-                    <hr>
-
                     <table class="table table-striped">
                     <thead>
                         <tr>
@@ -46,12 +39,13 @@
                     </table>
 
                     {{ $movimientos->links() }}
-
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+
 
 
 @endsection

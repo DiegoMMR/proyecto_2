@@ -12,15 +12,17 @@ class EmailVerification extends Mailable
     use Queueable, SerializesModels;
 
     protected $user;
+    protected $password;
 
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct($user)
+    public function __construct($user, $password)
     {
         $this->user = $user;
+        $this->password = $password;
     }
 
     /**
@@ -32,7 +34,9 @@ class EmailVerification extends Mailable
     {
         return $this->markdown('email.verify_account')
                 ->with([
-                    'email_token' => url('/verifyemail/' . $this->user->email_token)
+                    'email_token' => url('/verifyemail/' . $this->user->email_token),
+                    'name' => $this->user->name,
+                    'password' => $this->password,
                 ]);
     }
 }

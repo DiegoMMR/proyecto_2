@@ -1,31 +1,30 @@
 @extends('layouts.app')
 
 @section('content')
+
 <div class="container">
     <div class="row justify-content-center">
-        <div class="col-md-8">
+        <div class="col-md-10">
             <div class="card">
-                <div class="card-header">{{ __('Register') }}</div>
+                <div class="card-header">Registrar Cuenta</div>
 
                 <div class="card-body">
                     {!! Form::open([
-                            'route' => 'register',
+                            'route' => 'cuentas-terceros.store',
                             'class' => '',
                             'files' => true]) !!}
 
-                        @include ('auth.form')
+                    @include ('cuentas-terceros.form')
 
-                        
-                    {!! Form::close() !!}
+
+                     {!! Form::close() !!}
                 </div>
             </div>
         </div>
     </div>
 </div>
-@endsection
 
-@section('scripts')
-<script>
-})
-</script>
+
+
+
 @endsection

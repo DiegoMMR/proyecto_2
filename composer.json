@@ -13,7 +13,8 @@
         "laravelcollective/html": "~5.0",
         "laraveles/spanish": "^1.1",
         "vinkla/hashids": "^4.0",
-        "yoeunes/toastr": "^1.1"
+        "yoeunes/toastr": "^1.1",
+        "nesbot/carbon": "^1.33"
     },
     "require-dev": {
         "filp/whoops": "^2.0",

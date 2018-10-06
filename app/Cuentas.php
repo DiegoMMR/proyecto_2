@@ -16,4 +16,8 @@ class Cuentas extends Model
         return $this->belongsTo('App\Cliente', 'cliente_id');
     }
 
+    public function Movimientos(){
+        return $this->hasMany('App\Movimientos', 'cuenta_id');
+    }
+
 }
